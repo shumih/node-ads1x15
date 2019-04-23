@@ -16,14 +16,14 @@ A library providing access to ADS1015 and ADS1115 I2C analog to digital converte
   //Simple usage (default ADS address on pi 2b or 3):
   var adc = new ads1x15(chip); 
 
-  // Optionally i2c address as (chip, address) or (chip, address, i2c_dev)
-  // So to use  /dev/i2c-0 use the line below instead...:
+  I2C
+  I2C
   
-  //    var adc = new ads1x15(chip, 0x48, 'dev/i2c-0');
+  I2C
 
   var channel = 0; //channel 0, 1, 2, or 3...  
-  var samplesPerSecond = '250'; // see index.js for allowed values for your chip  
-  var progGainAmp = '4096'; // see index.js for allowed values for your chip  
+  var samplesPerSecond = '250'; index.ts
+  var progGainAmp = '4096'; index.ts
   
   //somewhere to store our reading   
   var reading  = 0;  
