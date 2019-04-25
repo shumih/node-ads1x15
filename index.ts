@@ -1,6 +1,6 @@
 // javascript/node  rewrite of the Adafruit ads1x15 python library...
-import * as I2C from 'i2c';
-
+const I2C = require('i2c');
+//ch
 // Pointer Register
 const ADS1015_REG_POINTER_MASK = 0x03;
 const ADS1015_REG_POINTER_CONVERT = 0x00;
@@ -111,7 +111,7 @@ class Ads {
   constructor(
     private ic: AdsTypes = AdsTypes.ADS1115,
     private address: number = 0x48,
-    private device: string = '/dev/I2C-1'
+    private device: string = '/dev/i2c-1'
   ) {
     this.wire = new I2C(address, { device });
   }
@@ -361,23 +361,23 @@ class Ads {
 
   public getLastConversionResults(callback: (err: Error | null, value?: number) => void): void {
     // Read the conversion results
-    this.wire.readBytes(ADS1015_REG_POINTER_CONVERT, 2, (err: Error, res: Buffer) => {
+    this.wire.readBytes(ADS1015_REG_POINTER_CONVERT, 2, (err: Error, buffer: Buffer) => {
       if (this.ic == AdsTypes.ADS1015) {
         // Shift right 4 bits for the 12-bit ADS1015 and convert to mV
-        const data = ((((res[0] << 8) | (res[1] & 0xff)) >> 4) * this.pga) / 2048.0;
-        callback(null, data);
+        const voltage = ((((buffer[0] << 8) | (buffer[1] & 0xff)) >> 4) * this.pga) / 2048.0;
+        callback(null, voltage);
       } else {
         // Return a mV value for the ADS1115
         // (Take signed values into account as well)
-        let data = -1;
-        const val = (res[0] << 8) | res[1];
+        let voltage = -1;
+        const val = buffer.readUInt16BE(0);
         if (val > 0x7fff) {
-          data = ((val - 0xffff) * this.pga) / 32768.0;
+          voltage = (val - 0xffff) * this.pga / 32768.0;
         } else {
-          data = (((res[0] << 8) | res[1]) * this.pga) / 32768.0;
+          voltage = val * this.pga / 32768.0;
         }
 
-        callback(null, data);
+        callback(null, voltage);
       }
     });
   }

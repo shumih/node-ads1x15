@@ -1,9 +1,11 @@
 {
   "name": "ads-reader",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Node module for the I2C ADS1x15 analog to digital converters to run on Raspberry Pi",
   "main": "index.ts",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/shumih/node-ads1x15.git"
